@@ -1,5 +1,7 @@
 # StartupScript_for_VULTR
-Vultr初始化启动脚本，用于在新建vultr等服务器的时候，直接安装[arai2py](https://github.com/SuperMore/Aria2Py)，以及jupyter lab（用于免ssh登录）。
+[arai2py](https://github.com/SuperMore/Aria2Py) 的vultr脚本,不过搬瓦工或者lindo等所有服务器都能用。
+
+[Vultr](https://www.vultr.com/?ref=8126287)初始化启动脚本，用于在新建vultr等服务器的时候，直接安装[arai2py](https://github.com/SuperMore/Aria2Py)，以及jupyter lab（用于免ssh登录）。
 
 # 配置
 ## 复制文件
@@ -25,3 +27,7 @@ Vultr初始化启动脚本，用于在新建vultr等服务器的时候，直接�
 # 修改jupyter 密码
  jupyter lab password
 ```
+# VPS推荐
+[vultr推广优惠](https://www.vultr.com/?ref=8126287)
+[搬瓦工](https://bwh81.net/aff.php?aff=63547) or 
+[搬瓦工](https://bandwagonhost.com/aff.php?aff=63547)
