@@ -29,5 +29,7 @@
 ```
 # VPS推荐
 [vultr推广优惠](https://www.vultr.com/?ref=8126287)
-[搬瓦工](https://bwh81.net/aff.php?aff=63547) or 
+
+[搬瓦工](https://bwh81.net/aff.php?aff=63547) 
+
 [搬瓦工](https://bandwagonhost.com/aff.php?aff=63547)
