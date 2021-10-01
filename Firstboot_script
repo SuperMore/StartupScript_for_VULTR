@@ -1,0 +1,140 @@
+#!/bin/bash
+# Script for vultr or other vps.
+# https://www.vultr.com/?ref=8126287
+# https://github.com/Masterchiefm/
+#
+mkdir /root/.config
+mkdir /root/.config/rclone/
+cat << EOF > /root/.config/rclone/rclone.conf
+#请将 rclone配置文件粘贴于下框， rclone配置文件一般是/root/.config/rclone/rclone.conf
+##############################################################################################
+#————————————————————————————————————————————————————————————————————————————————————————————#
+
+
+
+
+
+
+
+#————————————————————————————————————————————————————————————————————————————————————————————#
+##############################################################################################
+EOF
+#sudo apt install php php-curl
+sudo apt install   rclone -y
+sudo apt install curl -y
+bash <(curl -s -L  https://raw.githubusercontent.com/Masterchiefm/Aria2Dash/master/install.sh)
+
+touch /var/www/html/installing #提示正在下载
+# wget https://git.io/v2ray.sh -O /root/v2ray.sh
+
+# wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/install.sh && bash install.sh>/var/www/html/v2.log
+
+
+apt install rclone -y
+rclone config
+
+#jupyter 部分
+apt install python3 python3-pip -y
+pip3 install jupyter 
+pip3 install jupyterlab
+
+rm /var/www/html/installing
+
+cat << EOF > mv.py
+dir=input('输入路径：').strip()
+n=input('输入文件名：').strip()
+dir = dir + n
+if '下载路径' in dir:
+    dir=dir[6:]
+    #print(dir)
+    if '任务名称' in dir:
+        
+        l = dir.find('任务')
+        
+        
+        if '/' in dir[-1]:
+            left=dir[:l]
+        else:
+            left=dir[:l] + '/'
+        
+        #print('left='+ left)
+        r = dir.find('称:')
+        right = dir[r+3:]
+        #print(right)
+        dir = left + right
+
+
+if ' ' in dir:
+    dir = dir.replace(' ','''\ ''')
+
+print(dir)
+
+o=input('m or c')
+if o == 'c':
+    opt = 'copy '
+else:
+    opt = 'move '
+cmd = 'rclone ' + opt + dir + ' gdrive:' + dir + ' -P  --min-size 1G'
+import os
+#os.system('ls ' + dir)
+os.system(cmd)
+os.system('ls ' + dir)
+if opt == 'move':
+    cmd2='rm -rf ' + dir
+    os.system(cmd2)
+    print('deleted '+ dir)
+
+
+EOF
+
+touch /usr/bin/rmv
+echo 'python3 /mv.py' >/usr/bin/rmv
+chmod 777 /usr/bin/rmv
+
+bash <(curl -s -L https://github.com/SuperMore/Aria2Py/raw/main/getAria2py.sh)
+
+nohup jupyter-lab --no-browser  --allow-root --ip=0.0.0.0 &
+touch /var/www/html/nohup.out
+cat /tmp/nohup.out /var/www/html/nohup.out
+chmod 777 -R /var/www/html
+
+
+cat << EOF > /etc/systemd/system/jupyter.service 
+[Unit]
+Description=Rclone
+After=network-online.target
+[Service]
+Type=simple
+ExecStart=jupyter-lab --no-browser  --allow-root --ip=0.0.0.0
+Restart=on-abort
+User=root
+[Install]
+WantedBy=default.target
+EOF
+jupyter notebook --generate-config
+mkdir /root/.jupyter/
+rm -rf /root/.jupyter/jupyter_notebook_config.json
+touch /root/.jupyter/jupyter_notebook_config.json
+cat << EOF > /root/.jupyter/jupyter_notebook_config.json
+{ 
+  "NotebookApp": {
+    "token": ""
+  }
+}
+EOF
+
+jupyter notebook password
+
+##########################################################################
+# 更改jupyter lab 登录密码，默认为114514。把两个都改了就行。
+jupyter lab password << EOF
+114514
+114514
+EOF
+
+ln /tmp/firstboot.log /var/www/html/firstboot.log
+systemctl daemon-reload
+systemctl enable jupyter
+systemctl start jupyter
+echo '完成'
+
